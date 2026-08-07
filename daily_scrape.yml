@@ -1,0 +1,48 @@
+name: ⏰ Sports Desire - Automated Daily Federation Scraper
+
+# This workflow automatically wakes up a free GitHub server every night at midnight UTC,
+# executes our Python Scraper Engine against national sports associations,
+# and automatically updates your live web application's tournaments database!
+
+on:
+  schedule:
+    # Runs every single day at 00:00 UTC (around 5:30 AM IST)
+    - cron: '0 0 * * *'
+  # Allows you to click a button in your GitHub Actions dashboard to trigger an instant scrape anytime!
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📁 Checkout Sports Desire Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Install Scraper Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scraper_backend/requirements.txt
+
+      - name: 🚀 Run Scraper Ingestion & Update App Database
+        run: |
+          python scraper_backend/auto_updater.py
+          
+      - name: 💾 Commit and Publish Updated Tournaments to Web Application
+        run: |
+          git config --local user.email "bot-automation@sportsdesire.in"
+          git config --local user.name "Sports Desire Automator Bot"
+          git add tournamentsData.js
+          # Commit changes if new tournament schedules were detected and merged
+          git diff-index --quiet HEAD || git commit -m "⚡ Automated Ingest: New Sports Federation Schedules added [$(date +'%Y-%m-%d')]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

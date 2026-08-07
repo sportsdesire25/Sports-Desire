@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Sports Desire</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <a href="index.html" class="brand-logo" style="margin-bottom: 2rem;">
+        <div class="brand-icon"><i data-lucide="trophy" style="width: 20px; height: 20px;"></i></div>
+        <span>Sports Desire</span>
+      </a>
+      
+      <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.5px;">Admin Menu</div>
+      
+      <nav class="admin-sidebar-nav" style="margin-top: 0;">
+        <a href="#" class="admin-nav-link active">
+          <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i> Overview
+        </a>
+        <a href="#" class="admin-nav-link">
+          <i data-lucide="list" style="width: 18px; height: 18px;"></i> Tournaments
+        </a>
+        <a href="#" class="admin-nav-link">
+          <i data-lucide="users" style="width: 18px; height: 18px;"></i> Memberships
+        </a>
+        <a href="#" class="admin-nav-link">
+          <i data-lucide="credit-card" style="width: 18px; height: 18px;"></i> Payments
+        </a>
+        <a href="index.html" class="admin-nav-link" style="margin-top: auto;">
+          <i data-lucide="log-out" style="width: 18px; height: 18px;"></i> Back to App
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="font-family: var(--font-heading); font-size: 2rem;">Dashboard Overview</h1>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="btn btn-primary" onclick="alert('Open Add Tournament Modal')">
+            <i data-lucide="plus" style="width: 16px; height: 16px;"></i> Add Tournament
+          </button>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <span>Total Revenue</span>
+            <i data-lucide="indian-rupee" style="width: 18px; height: 18px; color: var(--primary-emerald);"></i>
+          </div>
+          <div class="metric-value">₹24,450</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;"><span style="color: var(--primary-emerald);">+12%</span> from last month</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <span>Active Tournaments</span>
+            <i data-lucide="calendar" style="width: 18px; height: 18px; color: var(--neon-cyan);"></i>
+          </div>
+          <div class="metric-value" id="total-tournaments">0</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Across all states</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-header">
+            <span>Pro Members</span>
+            <i data-lucide="users" style="width: 18px; height: 18px; color: var(--accent-gold);"></i>
+          </div>
+          <div class="metric-value">142</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;"><span style="color: var(--primary-emerald);">+4</span> this week</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <h2 style="font-family: var(--font-heading); font-size: 1.25rem; margin-bottom: 1rem;">Recent Listings</h2>
+      <div class="admin-table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Tournament Title</th>
+              <th>Sport</th>
+              <th>Level</th>
+              <th>State</th>
+              <th>Organizer Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-table-body">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="tournamentsData.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      
+      let tournaments = [...INITIAL_TOURNAMENTS];
+      const saved = localStorage.getItem('sports_desire_tournaments');
+      if (saved) {
+        try {
+          const savedList = JSON.parse(saved);
+          savedList.forEach(savedItem => {
+            if (!tournaments.some(item => item.id === savedItem.id)) {
+              tournaments.unshift(savedItem);
+            }
+          });
+        } catch (e) { console.warn(e); }
+      }
+
+      document.getElementById('total-tournaments').textContent = tournaments.length;
+
+      const tbody = document.getElementById('admin-table-body');
+      tbody.innerHTML = tournaments.map(t => `
+        <tr>
+          <td style="font-weight: 600; color: var(--text-main);">${t.title}</td>
+          <td>${t.sport}</td>
+          <td><span class="badge ${t.tier === 'state' ? 'badge-state' : (t.tier === 'national' ? 'badge-national' : 'badge-local')}">${t.level}</span></td>
+          <td>${t.state}</td>
+          <td>
+            ${t.isVerified 
+              ? '<span class="status-badge status-approved">Verified & Paid</span>'
+              : '<span class="status-badge status-pending">Pending</span>'
+            }
+          </td>
+          <td>
+            <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="alert('Edit Tournament: ${t.title}')">Edit</button>
+          </td>
+        </tr>
+      `).join('');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Desire | Local & National Sports Tournaments in India</title>
+  <meta name="description" content="Discover local & national sports tournament schedules in India. Explore schedules for Tennis, Badminton, Football, Cricket, and more across National, State, and Local levels.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">
+          <i data-lucide="trophy" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span>Sports Desire</span>
+        <span class="brand-badge">India</span>
+      </a>
+
+      <div class="nav-actions">
+
+        <button class="btn btn-primary" onclick="document.getElementById('host-modal').classList.add('active')">
+          <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+          <span>Host Tournament</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-section">
+    <div class="hero-card">
+      <div>
+        <h1 class="hero-title">
+          Discover All Sports Tournaments in <span>India</span>
+        </h1>
+        <p class="hero-subtitle">
+          Never miss a local or official tournament again. Explore official state rankings, national calendars, and local tournaments across all sports.
+        </p>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-value" style="color: var(--primary-emerald);">120+</span>
+            <span class="stat-label">Local & National Events</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" style="color: var(--neon-cyan);">State & National</span>
+            <span class="stat-label">Official Calendars</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" style="color: var(--accent-gold);">100%</span>
+            <span class="stat-label">Verified Organizers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-actions-box">
+        <div class="action-box-title">
+          <i data-lucide="shield-check" style="width: 20px; height: 20px;"></i>
+          <span>Are You a Tournament Organizer?</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Reach thousands of local sports players across India. List your tournament with instant WhatsApp registration support.
+        </p>
+        <button class="btn btn-gold" onclick="document.getElementById('host-modal').classList.add('active')" style="width: 100%;">
+          <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+          Host Your Tournament
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Tabs -->
+  <div class="category-tabs-wrapper">
+    <div class="category-tabs">
+      <button class="tab-btn active" data-tab="all">
+        <i data-lucide="globe" style="width: 16px; height: 16px;"></i>
+        All Tournaments
+      </button>
+      <button class="tab-btn" data-tab="national">
+        <i data-lucide="flag" style="width: 16px; height: 16px;"></i>
+        National Level
+      </button>
+      <button class="tab-btn tab-state" data-tab="state">
+        <i data-lucide="award" style="width: 16px; height: 16px;"></i>
+        State Level
+      </button>
+      <button class="tab-btn" data-tab="local">
+        <i data-lucide="flame" style="width: 16px; height: 16px;"></i>
+        Local Level
+      </button>
+    </div>
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <section class="filter-section">
+    <div class="filter-bar">
+      <div class="search-input-group">
+        <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+        <input type="text" id="search-input" class="search-input" placeholder="Search by city, venue, tournament title or organizer...">
+      </div>
+
+      <select id="filter-region" class="filter-select">
+        <option value="All Regions">All Regions</option>
+      </select>
+
+      <select id="filter-sport" class="filter-select">
+        <option value="All Sports">All Sports</option>
+      </select>
+
+      <select id="filter-age" class="filter-select">
+        <option value="All Ages">All Age Groups</option>
+      </select>
+
+      <select id="filter-level" class="filter-select">
+        <option value="All Levels">All Levels</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="main-container">
+    
+    <!-- Tournaments Feed Grid -->
+    <div id="tournaments-grid-wrapper">
+      <div class="section-header">
+        <h2 id="section-title-text" class="section-title">
+          <i data-lucide="calendar" style="width: 20px; height: 20px; color: var(--primary-emerald);"></i>
+          All Upcoming Sports Tournaments
+        </h2>
+        <span id="results-count" class="results-count">Loading tournaments...</span>
+      </div>
+
+      <div id="tournaments-grid" class="tournament-grid">
+        <!-- Rendered via app.js -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Detail View Modal -->
+  <div id="detail-modal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('detail-modal')">
+        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+      </button>
+      <div id="detail-modal-body">
+        <!-- Dynamic content via app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Host Tournament Modal (Step 1) -->
+  <div id="host-modal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('host-modal')">
+        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+      </button>
+      
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+        <span class="badge badge-local">Organizer Portal</span>
+        <span style="font-size: 0.8rem; color: var(--accent-gold); font-weight: 700;">₹499 Verified Listing</span>
+      </div>
+
+      <h2 class="modal-title">Host Your Tournament</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        Fill in your tournament details. Step 2 will let you complete the ₹499 listing checkout to receive the Verified Organizer badge.
+      </p>
+
+      <form id="organizer-host-form">
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label class="form-label">Tournament Title *</label>
+            <input type="text" id="org-title" class="form-control" placeholder="e.g. All India Open Junior Tennis Trophy 2026" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Sport Category *</label>
+            <select id="org-sport" class="form-control" required>
+              <option value="Tennis">Tennis</option>
+              <option value="Badminton">Badminton</option>
+              <option value="Football">Football / Futsal</option>
+              <option value="Cricket">Cricket</option>
+              <option value="Table Tennis">Table Tennis</option>
+              <option value="Volleyball">Volleyball</option>
+              <option value="Basketball">Basketball</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tournament Level *</label>
+            <select id="org-association" class="form-control" required>
+              <option value="National">National Level (e.g. AITA, BAI, BCCI)</option>
+              <option value="State">State Level</option>
+              <option value="Local">Local Level</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">State *</label>
+            <select id="org-state" class="form-control" required>
+              <option value="Assam">Assam</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Manipur">Manipur</option>
+              <option value="Mizoram">Mizoram</option>
+              <option value="Nagaland">Nagaland</option>
+              <option value="Tripura">Tripura</option>
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="West Bengal">West Bengal</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Kerala">Kerala</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">City / District *</label>
+            <input type="text" id="org-city" class="form-control" placeholder="e.g. Guwahati, Mumbai, Delhi" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Venue Address *</label>
+            <input type="text" id="org-venue" class="form-control" placeholder="e.g. Main Sports Complex, MG Road" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Start Date *</label>
+            <input type="date" id="org-start-date" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">End Date *</label>
+            <input type="date" id="org-end-date" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Last Registration Deadline *</label>
+            <input type="date" id="org-deadline" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Entry Fee *</label>
+            <input type="text" id="org-entry-fee" class="form-control" placeholder="e.g. ₹500 per player / ₹3000 team" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Total Prize Pool *</label>
+            <input type="text" id="org-prize" class="form-control" placeholder="e.g. ₹50,000 + Trophies" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Organizer Name *</label>
+            <input type="text" id="org-name" class="form-control" placeholder="e.g. National Sports Club" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Contact / WhatsApp Phone Number *</label>
+            <input type="tel" id="org-phone" class="form-control" placeholder="e.g. +91 98640 12345" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Tournament Poster Image URL (Optional)</label>
+            <input type="url" id="org-poster" class="form-control" placeholder="https://..." value="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80">
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Age Groups / Categories</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label"><input type="checkbox" class="age-group-checkbox" value="U-12" checked> U-12</label>
+              <label class="checkbox-label"><input type="checkbox" class="age-group-checkbox" value="U-14" checked> U-14</label>
+              <label class="checkbox-label"><input type="checkbox" class="age-group-checkbox" value="U-16" checked> U-16</label>
+              <label class="checkbox-label"><input type="checkbox" class="age-group-checkbox" value="U-18" checked> U-18</label>
+              <label class="checkbox-label"><input type="checkbox" class="age-group-checkbox" value="Men's Singles" checked> Men's Singles</label>
+              <label class="checkbox-label"><input type="checkbox" class="age-group-checkbox" value="Women's Singles"> Women's Singles</label>
+              <label class="checkbox-label"><input type="checkbox" class="age-group-checkbox" value="Veterans 35+"> Veterans 35+</label>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Brief Description & Rules</label>
+            <textarea id="org-desc" class="form-control" rows="3" placeholder="Specify tournament format, ball type, prizes, schedule details..."></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-outline" onclick="closeModal('host-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            Proceed to ₹499 Listing Checkout →
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ₹499 Payment Checkout Modal (Step 2) -->
+  <div id="payment-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 480px; text-align: center;">
+      <button class="modal-close-btn" onclick="closeModal('payment-modal')">
+        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+      </button>
+
+      <div style="width: 56px; height: 56px; background: rgba(0, 230, 118, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary-emerald);">
+        <i data-lucide="shield-check" style="width: 28px; height: 28px;"></i>
+      </div>
+
+      <h2 class="modal-title">Organizer ₹499 Listing Fee</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">
+        Your listing will be published immediately with a <strong>Verified Organizer Badge</strong> across player feeds.
+      </p>
+
+      <div class="payment-card-preview">
+        <div style="text-align: left;">
+          <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Listing Fee</span>
+          <h4 style="font-family: var(--font-heading); color: #fff;">1x Tournament Publication</h4>
+        </div>
+        <span class="payment-amount">₹499</span>
+      </div>
+
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: left;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; color: var(--text-main); font-weight: 600;">
+          <i data-lucide="check" style="width: 14px; height: 14px; color: var(--primary-emerald);"></i>
+          Includes WhatsApp Direct Player Registration Button
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; color: var(--text-main); font-weight: 600;">
+          <i data-lucide="check" style="width: 14px; height: 14px; color: var(--primary-emerald);"></i>
+          Green Verified Badge for Maximum Player Trust
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); font-weight: 600;">
+          <i data-lucide="check" style="width: 14px; height: 14px; color: var(--primary-emerald);"></i>
+          Featured in National / State / Local Filter Tabs
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="completeOrganizerPayment()" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
+        <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
+        Complete ₹499 Payment & Publish Live
+      </button>
+    </div>
+  </div>
+
+
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo" style="margin-bottom: 0.5rem;">
+          <div class="brand-icon">
+            <i data-lucide="trophy" style="width: 20px; height: 20px;"></i>
+          </div>
+          <span>Sports Desire</span>
+        </div>
+        <p>Connecting athletes with national, state, and local tournaments across India.</p>
+        <div class="social-links">
+          <a href="#"><i data-lucide="instagram" style="width: 20px; height: 20px;"></i></a>
+          <a href="#"><i data-lucide="twitter" style="width: 20px; height: 20px;"></i></a>
+          <a href="#"><i data-lucide="facebook" style="width: 20px; height: 20px;"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#" onclick="document.querySelector('.tab-btn[data-tab=\'national\']').click()">National Tournaments</a></li>
+          <li><a href="#" onclick="document.querySelector('.tab-btn[data-tab=\'state\']').click()">State Tournaments</a></li>
+          <li><a href="#" onclick="document.querySelector('.tab-btn[data-tab=\'local\']').click()">Local Tournaments</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#" onclick="document.getElementById('host-modal').classList.add('active')">Host a Tournament</a></li>
+          <li><a href="#" onclick="openModal('about-modal')">About Us</a></li>
+          <li><a href="#" onclick="openModal('contact-modal')">Contact Us</a></li>
+          <li><a href="#" onclick="openModal('terms-modal')">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Sports Desire. All rights reserved. <span style="opacity: 0.1;"><a href="admin.html" style="color: inherit; text-decoration: none;">[Admin]</a></span></p>
+    </div>
+  </footer>
+
+  <!-- About Us Modal -->
+  <div id="about-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 540px; text-align: center;">
+      <button class="modal-close-btn" onclick="closeModal('about-modal')">
+        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+      </button>
+      <div style="width: 56px; height: 56px; background: rgba(0, 240, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--neon-cyan);">
+        <i data-lucide="globe" style="width: 28px; height: 28px;"></i>
+      </div>
+      <h2 class="modal-title">About Sports Desire</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; text-align: left;">
+        Sports Desire is India's premier tournament aggregation platform. Our mission is to bridge the gap between talented athletes and sports organizers. 
+        <br><br>
+        Whether it's an official National Championship, a State Ranking event, or a local weekend cup, we ensure players never miss an opportunity to compete and showcase their skills.
+      </p>
+      <button class="btn btn-outline" onclick="closeModal('about-modal')" style="width: 100%;">Close</button>
+    </div>
+  </div>
+
+  <!-- Terms & Conditions Modal -->
+  <div id="terms-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 600px; max-height: 80vh; display: flex; flex-direction: column;">
+      <button class="modal-close-btn" onclick="closeModal('terms-modal')">
+        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+      </button>
+      <h2 class="modal-title" style="margin-bottom: 1rem;">Terms & Conditions</h2>
+      <div style="overflow-y: auto; padding-right: 1rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; text-align: left; flex: 1;">
+        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">1. Acceptance of Terms</h4>
+        <p style="margin-bottom: 1rem;">By accessing and using Sports Desire, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our platform.</p>
+        
+        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">2. Tournament Listings</h4>
+        <p style="margin-bottom: 1rem;">Organizers are responsible for the accuracy of their tournament listings. The ₹499 listing fee is non-refundable once the tournament is published. Sports Desire reserves the right to remove any fraudulent listings.</p>
+
+        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">3. Memberships & Billing</h4>
+        <p style="margin-bottom: 1rem;">The ₹99 monthly Pro Membership begins with a 3-day free trial. If you do not cancel within the 3-day window, your provided payment method will be automatically charged. Payments are non-refundable for the current billing cycle.</p>
+
+        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">4. Liability Disclaimer</h4>
+        <p style="margin-bottom: 1rem;">Sports Desire acts solely as an aggregator platform. We are not responsible for cancellations, injuries, or disputes that occur during the actual physical tournaments.</p>
+      </div>
+      <button class="btn btn-primary" onclick="closeModal('terms-modal')" style="width: 100%; margin-top: 1.5rem;">I Understand</button>
+    </div>
+  </div>
+
+  <!-- Contact Us Modal -->
+  <div id="contact-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 540px;">
+      <button class="modal-close-btn" onclick="closeModal('contact-modal')">
+        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+      </button>
+      <h2 class="modal-title" style="margin-bottom: 0.5rem;">Contact Us</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Have a question about a tournament listing or want to partner with us? Drop us a message.</p>
+      
+      <form onsubmit="event.preventDefault(); alert('Message Sent! We will get back to you within 24 hours.'); closeModal('contact-modal');">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-control" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-control" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label">Message</label>
+          <textarea class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <div class="mobile-nav-items">
+      <a href="#" class="mobile-nav-link active" onclick="document.querySelector('.tab-btn[data-tab=\'all\']').click()">
+        <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+        <span>Explore</span>
+      </a>
+      <a href="#" class="mobile-nav-link" onclick="document.querySelector('.tab-btn[data-tab=\'state\']').click()">
+        <i data-lucide="award" style="width: 18px; height: 18px;"></i>
+        <span>State</span>
+      </a>
+      <a href="#" class="mobile-nav-link" onclick="document.getElementById('host-modal').classList.add('active')">
+        <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--primary-emerald);"></i>
+        <span>Host</span>
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- App JavaScript files -->
+  <script src="tournamentsData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
