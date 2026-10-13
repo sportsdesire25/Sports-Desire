@@ -8,6 +8,8 @@ let state = {
   selectedSport: 'All Sports',
   selectedAge: 'All Ages',
   selectedLevel: 'All Levels',
+  selectedMonth: 'All Months',
+  selectedYear: 'All Years',
   tournaments: [],
 
   pendingOrganizerData: null
@@ -29,10 +31,12 @@ function loadTournamentsData() {
   if (saved) {
     try {
       const savedList = JSON.parse(saved);
-      // Preserve any custom tournaments submitted via Host Tournament form in localStorage
-      savedList.forEach(savedItem => {
-        if (!masterList.some(item => item.id === savedItem.id)) {
-          masterList.unshift(savedItem); // Put organizer submitted events at the top of the feed
+      // ONLY preserve tournaments created via the 'Host Tournament' form (id starts with 'tourn-')
+      // Discard all legacy fake/mock tournaments permanently
+      const userHosted = savedList.filter(item => item && item.id && item.id.startsWith('tourn-'));
+      userHosted.forEach(userItem => {
+        if (!masterList.some(item => item.id === userItem.id)) {
+          masterList.unshift(userItem); // Put organizer submitted events at the top of the feed
         }
       });
     } catch (e) {
@@ -70,27 +74,6 @@ function renderFilters() {
 
 // Event Listeners
 function setupEventListeners() {
-  // Category Tab Switching
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      const targetBtn = e.currentTarget;
-      targetBtn.classList.add('active');
-      state.activeTab = targetBtn.dataset.tab;
-      
-      // Update section title
-      const titleEl = document.getElementById('section-title-text');
-      if (titleEl) {
-        if (state.activeTab === 'national') titleEl.textContent = 'National Level Tournaments & Calendars';
-        else if (state.activeTab === 'state') titleEl.textContent = 'State Level Tournaments';
-        else if (state.activeTab === 'local') titleEl.textContent = 'Local Level Tournaments';
-        else titleEl.textContent = 'All Upcoming Sports Tournaments';
-      }
-
-      renderTournaments();
-    });
-  });
-
   // Search Input
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
@@ -105,11 +88,15 @@ function setupEventListeners() {
   const sportSelect = document.getElementById('filter-sport');
   const ageSelect = document.getElementById('filter-age');
   const levelSelect = document.getElementById('filter-level');
+  const monthSelect = document.getElementById('filter-month');
+  const yearSelect = document.getElementById('filter-year');
 
   if (regionSelect) regionSelect.addEventListener('change', (e) => { state.selectedRegion = e.target.value; renderTournaments(); });
   if (sportSelect) sportSelect.addEventListener('change', (e) => { state.selectedSport = e.target.value; renderTournaments(); });
   if (ageSelect) ageSelect.addEventListener('change', (e) => { state.selectedAge = e.target.value; renderTournaments(); });
   if (levelSelect) levelSelect.addEventListener('change', (e) => { state.selectedLevel = e.target.value; renderTournaments(); });
+  if (monthSelect) monthSelect.addEventListener('change', (e) => { state.selectedMonth = e.target.value; renderTournaments(); });
+  if (yearSelect) yearSelect.addEventListener('change', (e) => { state.selectedYear = e.target.value; renderTournaments(); });
 
   // Organizer Form Submission
   const hostForm = document.getElementById('organizer-host-form');
@@ -128,11 +115,6 @@ function renderTournaments() {
   if (!container) return;
 
   let filtered = state.tournaments.filter(item => {
-    // Tab Filter
-    if (state.activeTab === 'national' && item.tier !== 'national') return false;
-    if (state.activeTab === 'state' && item.tier !== 'state') return false;
-    if (state.activeTab === 'local' && item.tier !== 'local') return false;
-
     // Search Query
     if (state.searchQuery) {
       const q = state.searchQuery;
@@ -158,9 +140,26 @@ function renderTournaments() {
       if (!item.ageGroups.includes(state.selectedAge)) return false;
     }
 
-    // Level Filter
+    // Level & Tier Filter
     if (state.selectedLevel !== 'All Levels') {
-      if (!item.level.includes(state.selectedLevel.split(' ')[0])) return false;
+      const selected = state.selectedLevel.toLowerCase();
+      if (selected === 'national level') {
+        if (item.tier !== 'national') return false;
+      } else if (selected === 'state level') {
+        if (item.tier !== 'state') return false;
+      } else if (selected === 'local level') {
+        if (item.tier !== 'local') return false;
+      } else {
+        if (!item.level.toLowerCase().includes(selected.split(' ')[0])) return false;
+      }
+    }
+
+    // Date Filter (Month and Year)
+    if (state.selectedMonth !== 'All Months') {
+      if (item.startDate.split('-')[1] !== state.selectedMonth) return false;
+    }
+    if (state.selectedYear !== 'All Years') {
+      if (item.startDate.split('-')[0] !== state.selectedYear) return false;
     }
 
     return true;
@@ -192,9 +191,14 @@ function createTournamentCardHTML(item) {
   const formattedStartDate = formatDate(item.startDate);
   const formattedEndDate = formatDate(item.endDate);
 
+  const isExpired = new Date(item.endDate) < new Date();
+  const cardStyle = isExpired ? 'opacity: 0.6; filter: grayscale(50%);' : '';
+  const completedBadge = isExpired ? '<div style="position: absolute; top: 12px; right: 12px; background: rgba(220, 38, 38, 0.9); color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; z-index: 10;">Completed</div>' : '';
+
   return `
-    <div class="tournament-card" onclick="openDetailModal('${item.id}')">
+    <div class="tournament-card" onclick="openDetailModal('${item.id}')" style="${cardStyle}">
       <div class="card-image-box">
+        ${completedBadge}
         <img src="${item.posterUrl}" alt="${item.title}" class="card-image" onerror="this.src='https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80'">
         <div class="card-badges">
           <span class="badge ${badgeClass}">${item.association}</span>
@@ -291,7 +295,7 @@ function openDetailModal(id) {
           <h4 style="font-family: var(--font-heading); font-size: 1rem; color: var(--primary-emerald);">Organizer Contact & Registration</h4>
           <p style="font-size: 0.85rem; color: var(--text-muted);">${item.organizerName} (${item.organizerPhone})</p>
         </div>
-        <a href="https://wa.me/${item.organizerWhatsApp}?text=Hi%2C%20I%20saw%20your%20tournament%20'${encodeURIComponent(item.title)}'%20on%20Sports%20Desire.%20I%20want%20to%20register!" target="_blank" class="btn btn-primary" style="white-space: nowrap;">
+        <a href="https://wa.me/${item.organizerWhatsApp}?text=Hi%2C%20I%20saw%20your%20tournament%20'${encodeURIComponent(item.title)}'%20on%20Sports%20Desire.%20I%20want%20to%20register!" target="_blank" class="btn btn-primary" onclick="if(window.trackPlayerEntry) window.trackPlayerEntry('${item.id}')" style="white-space: nowrap;">
           <i data-lucide="message-square" style="width: 16px; height: 16px;"></i> WhatsApp Registration
         </a>
       </div>
