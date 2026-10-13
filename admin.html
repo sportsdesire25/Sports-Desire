@@ -110,7 +110,8 @@
       if (saved) {
         try {
           const savedList = JSON.parse(saved);
-          savedList.forEach(savedItem => {
+          const userHosted = savedList.filter(item => item && item.id && item.id.startsWith('tourn-'));
+          userHosted.forEach(savedItem => {
             if (!tournaments.some(item => item.id === savedItem.id)) {
               tournaments.unshift(savedItem);
             }
