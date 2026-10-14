@@ -26,26 +26,26 @@
       <a href="#" class="brand-logo">
         <img src="logo.jpeg" alt="Sports Desire Logo" style="width: 36px; height: 36px; border-radius: 8px; object-fit: contain;">
         <span>Sports Desire</span>
-        <span class="brand-badge">India</span>
+        <span class="brand-badge">Northeast</span>
       </a>
 
       <div class="nav-actions">
         <!-- User Profile (Shown when Logged In) -->
-        <div id="nav-user-profile" class="user-profile-pill" style="display: none;">
+        <div id="nav-user-profile" class="user-profile-pill" style="display: none;" onclick="openUserDashboard()">
           <img id="nav-user-avatar" src="" alt="User Avatar" class="user-avatar-img">
           <span id="nav-user-name" class="user-profile-name">Player</span>
-          <button id="nav-user-logout" class="btn-logout" title="Sign Out">
+          <button id="nav-user-logout" class="btn-logout" title="Sign Out" onclick="event.stopPropagation(); handleSignOut();">
             <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
           </button>
         </div>
 
         <!-- Sign In Button (Shown when Logged Out) -->
-        <button id="nav-auth-btn" class="btn btn-outline" style="padding: 0.5rem 1rem;">
+        <button id="nav-auth-btn" class="btn btn-outline nav-auth-btn" onclick="openAuthModal()">
           <i data-lucide="user" style="width: 16px; height: 16px;"></i>
           <span>Sign In</span>
         </button>
 
-        <button class="btn btn-primary" onclick="document.getElementById('host-modal').classList.add('active')">
+        <button id="nav-host-btn" class="btn btn-primary nav-host-btn" onclick="handleHostClick()">
           <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
           <span>Host Tournament</span>
         </button>
@@ -58,10 +58,10 @@
     <div class="hero-card">
       <div>
         <h1 class="hero-title">
-          Discover All Sports Tournaments in <span>India</span>
+          Discover All Sports Tournaments in <span>Northeast India</span>
         </h1>
         <p class="hero-subtitle">
-          Never miss a local or official tournament again. Explore official state rankings, national calendars, and local tournaments across all sports.
+          Never miss a state ranking, official calendar, or local tournament again across Assam, Meghalaya, and the Northeast.
         </p>
 
         <div class="hero-stats">
@@ -181,11 +181,9 @@
   </main>
 
   <!-- Detail View Modal -->
-  <div id="detail-modal" class="modal-overlay">
+  <div id="detail-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('detail-modal')">
     <div class="modal-box">
-      <button class="modal-close-btn" onclick="closeModal('detail-modal')">
-        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-      </button>
+      <button class="modal-close-btn" onclick="closeModal('detail-modal')" title="Close">&times;</button>
       <div id="detail-modal-body">
         <!-- Dynamic content via app.js -->
       </div>
@@ -193,11 +191,9 @@
   </div>
 
   <!-- Host Tournament Modal (Step 1) -->
-  <div id="host-modal" class="modal-overlay">
+  <div id="host-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('host-modal')">
     <div class="modal-box">
-      <button class="modal-close-btn" onclick="closeModal('host-modal')">
-        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-      </button>
+      <button class="modal-close-btn" onclick="closeModal('host-modal')" title="Close">&times;</button>
       
       <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
         <span class="badge badge-local">Organizer Portal</span>
@@ -338,11 +334,9 @@
   </div>
 
   <!-- ₹499 Payment Checkout Modal (Step 2) -->
-  <div id="payment-modal" class="modal-overlay">
+  <div id="payment-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('payment-modal')">
     <div class="modal-box" style="max-width: 480px; text-align: center;">
-      <button class="modal-close-btn" onclick="closeModal('payment-modal')">
-        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-      </button>
+      <button class="modal-close-btn" onclick="closeModal('payment-modal')" title="Close">&times;</button>
 
       <div style="width: 56px; height: 56px; background: rgba(0, 230, 118, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary-emerald);">
         <i data-lucide="shield-check" style="width: 28px; height: 28px;"></i>
@@ -411,10 +405,10 @@
       <div class="footer-links">
         <h4>Support</h4>
         <ul>
-          <li><a href="#" onclick="document.getElementById('host-modal').classList.add('active')">Host a Tournament</a></li>
-          <li><a href="#" onclick="openModal('about-modal')">About Us</a></li>
-          <li><a href="#" onclick="openModal('contact-modal')">Contact Us</a></li>
-          <li><a href="#" onclick="openModal('terms-modal')">Terms & Conditions</a></li>
+          <li><a href="#" onclick="handleHostClick(); return false;">Host a Tournament</a></li>
+          <li><a href="#" onclick="openModal('about-modal'); return false;">About Us</a></li>
+          <li><a href="#" onclick="openModal('contact-modal'); return false;">Contact Us</a></li>
+          <li><a href="#" onclick="openModal('terms-modal'); return false;">Terms & Conditions</a></li>
         </ul>
       </div>
     </div>
@@ -424,11 +418,9 @@
   </footer>
 
   <!-- About Us Modal -->
-  <div id="about-modal" class="modal-overlay">
+  <div id="about-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('about-modal')">
     <div class="modal-box" style="max-width: 540px; text-align: center;">
-      <button class="modal-close-btn" onclick="closeModal('about-modal')">
-        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-      </button>
+      <button class="modal-close-btn" onclick="closeModal('about-modal')" title="Close">&times;</button>
       <div style="width: 56px; height: 56px; background: rgba(0, 240, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--neon-cyan);">
         <i data-lucide="globe" style="width: 28px; height: 28px;"></i>
       </div>
@@ -443,50 +435,49 @@
   </div>
 
   <!-- Terms & Conditions Modal -->
-  <div id="terms-modal" class="modal-overlay">
-    <div class="modal-box" style="max-width: 600px; max-height: 80vh; display: flex; flex-direction: column;">
-      <button class="modal-close-btn" onclick="closeModal('terms-modal')">
-        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-      </button>
+  <div id="terms-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('terms-modal')">
+    <div class="modal-box" style="max-width: 620px; max-height: 85vh; display: flex; flex-direction: column;">
+      <button class="modal-close-btn" onclick="closeModal('terms-modal')" title="Close">&times;</button>
       <h2 class="modal-title" style="margin-bottom: 1rem;">Terms & Conditions</h2>
-      <div style="overflow-y: auto; padding-right: 1rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; text-align: left; flex: 1;">
-        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">1. Acceptance of Terms</h4>
-        <p style="margin-bottom: 1rem;">By accessing and using Sports Desire, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our platform.</p>
+      <div style="overflow-y: auto; padding-right: 1rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; text-align: left; flex: 1;">
+        <h4 style="color: var(--text-main); margin-bottom: 0.35rem;">1. About Sports Desire</h4>
+        <p style="margin-bottom: 1rem;">Sports Desire is the premier sports tournament aggregation and discovery platform for Northeast India (Assam, Meghalaya, Arunachal Pradesh, Nagaland, Manipur, Mizoram, Tripura, and Sikkim). Our mission is to connect athletes, parents, and coaches with verified state, national, and local tournaments.</p>
         
-        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">2. Tournament Listings</h4>
-        <p style="margin-bottom: 1rem;">Organizers are responsible for the accuracy of their tournament listings. The ₹499 listing fee is non-refundable once the tournament is published. Sports Desire reserves the right to remove any fraudulent listings.</p>
+        <h4 style="color: var(--text-main); margin-bottom: 0.35rem;">2. 100% Free for Players & Parents</h4>
+        <p style="margin-bottom: 1rem;">Access to tournament calendars, schedules, categories, age groups, and organizer contact details is completely free of charge for players and parents. Sports Desire does not charge players any membership or subscription fees.</p>
 
-        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">3. Memberships & Billing</h4>
-        <p style="margin-bottom: 1rem;">The ₹99 monthly Pro Membership begins with a 3-day free trial. If you do not cancel within the 3-day window, your provided payment method will be automatically charged. Payments are non-refundable for the current billing cycle.</p>
+        <h4 style="color: var(--text-main); margin-bottom: 0.35rem;">3. Tournament Organiser Verified Listings (₹499 Fee)</h4>
+        <p style="margin-bottom: 1rem;">Tournament organizers may list verified events on Sports Desire for a one-time listing verification fee of ₹499 per tournament. This fee covers digital publication, promotion across the Northeast player network, and direct WhatsApp player registration routing. Organizers are solely responsible for ensuring the accuracy of dates, age categories, rules, and venue details.</p>
 
-        <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">4. Liability Disclaimer</h4>
-        <p style="margin-bottom: 1rem;">Sports Desire acts solely as an aggregator platform. We are not responsible for cancellations, injuries, or disputes that occur during the actual physical tournaments.</p>
+        <h4 style="color: var(--text-main); margin-bottom: 0.35rem;">4. Match Entry Fees & Registrations</h4>
+        <p style="margin-bottom: 1rem;">Tournament match entry fees (if applicable) are paid directly by players to tournament organizers. Sports Desire does not collect or hold player match fees. Any disputes regarding match scheduling, draws, venue logistics, or prize money must be addressed directly with the designated tournament director.</p>
+
+        <h4 style="color: var(--text-main); margin-bottom: 0.35rem;">5. Sports Safety & Liability Disclaimer</h4>
+        <p style="margin-bottom: 1rem;">Sports Desire acts solely as a discovery and informational network. Participation in athletic competitions involves inherent physical risks. Sports Desire accepts no liability for personal injuries, equipment damage, tournament postponements, weather cancellations, or disputes arising at physical tournament grounds.</p>
       </div>
-      <button class="btn btn-primary" onclick="closeModal('terms-modal')" style="width: 100%; margin-top: 1.5rem;">I Understand</button>
+      <button class="btn btn-primary" onclick="closeModal('terms-modal')" style="width: 100%; margin-top: 1.25rem;">I Understand & Agree</button>
     </div>
   </div>
 
   <!-- Contact Us Modal -->
-  <div id="contact-modal" class="modal-overlay">
+  <div id="contact-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('contact-modal')">
     <div class="modal-box" style="max-width: 540px;">
-      <button class="modal-close-btn" onclick="closeModal('contact-modal')">
-        <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-      </button>
+      <button class="modal-close-btn" onclick="closeModal('contact-modal')" title="Close">&times;</button>
       <h2 class="modal-title" style="margin-bottom: 0.5rem;">Contact Us</h2>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Have a question about a tournament listing or want to partner with us? Drop us a message.</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Have a question about an Assam/Northeast tournament listing or want to partner with us? Drop us a message.</p>
       
       <form onsubmit="event.preventDefault(); alert('Message Sent! We will get back to you within 24 hours.'); closeModal('contact-modal');">
         <div class="form-group" style="margin-bottom: 1rem;">
           <label class="form-label">Your Name</label>
-          <input type="text" class="form-control" required>
+          <input type="text" class="form-control" required placeholder="Enter your name">
         </div>
         <div class="form-group" style="margin-bottom: 1rem;">
           <label class="form-label">Email Address</label>
-          <input type="email" class="form-control" required>
+          <input type="email" class="form-control" required placeholder="name@example.com">
         </div>
         <div class="form-group" style="margin-bottom: 1.5rem;">
           <label class="form-label">Message</label>
-          <textarea class="form-control" rows="4" required></textarea>
+          <textarea class="form-control" rows="4" required placeholder="Your question or message..."></textarea>
         </div>
         <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
       </form>
@@ -516,9 +507,9 @@
   </nav>
 
   <!-- Authentication Modal (Google, Email/Password, Phone OTP) -->
-  <div id="auth-modal" class="modal-overlay">
+  <div id="auth-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('auth-modal')">
     <div class="modal-card auth-modal-card">
-      <button id="auth-modal-close" class="modal-close-btn">&times;</button>
+      <button id="auth-modal-close" class="modal-close-btn" onclick="closeModal('auth-modal')" title="Close">&times;</button>
       
       <div class="auth-header">
         <img src="logo.jpeg" alt="Logo" class="auth-logo">
@@ -526,15 +517,18 @@
         <p class="auth-subtitle">Log in or create your account below</p>
       </div>
 
+      <!-- Notice Banner (When user tried to host without login) -->
+      <div id="auth-notice-banner" class="auth-notice" style="display: none;"></div>
+
       <!-- Role Selector (Player/Parent vs Organiser) -->
       <div class="auth-role-selector">
         <label class="role-selector-heading">I am signing in as a:</label>
         <div class="role-pills">
-          <button type="button" id="role-pill-player" class="role-pill active">
+          <button type="button" id="role-pill-player" class="role-pill active" onclick="setAuthRole('player')">
             <i data-lucide="user-check" style="width: 16px; height: 16px;"></i>
             <span>Player / Parent</span>
           </button>
-          <button type="button" id="role-pill-organizer" class="role-pill">
+          <button type="button" id="role-pill-organizer" class="role-pill" onclick="setAuthRole('organizer')">
             <i data-lucide="trophy" style="width: 16px; height: 16px;"></i>
             <span>Tournament Organiser</span>
           </button>
@@ -545,7 +539,7 @@
       </div>
 
       <!-- Quick Google Sign In -->
-      <button id="auth-google-btn" class="btn-google">
+      <button id="auth-google-btn" class="btn-google" type="button" onclick="handleGoogleSignIn()">
         <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -561,11 +555,11 @@
 
       <!-- Auth Method Tabs -->
       <div class="auth-tabs">
-        <button id="auth-tab-email" class="auth-tab active" type="button">
+        <button id="auth-tab-email" class="auth-tab active" type="button" onclick="setAuthTab('email')">
           <i data-lucide="mail" style="width: 15px; height: 15px;"></i>
           Email
         </button>
-        <button id="auth-tab-phone" class="auth-tab" type="button">
+        <button id="auth-tab-phone" class="auth-tab" type="button" onclick="setAuthTab('phone')">
           <i data-lucide="phone" style="width: 15px; height: 15px;"></i>
           Phone OTP
         </button>
@@ -575,7 +569,7 @@
       <div id="auth-message-box" class="auth-alert" style="display: none;"></div>
 
       <!-- Email / Password Form -->
-      <form id="auth-email-form" class="auth-form">
+      <form id="auth-email-form" class="auth-form" onsubmit="event.preventDefault(); handleEmailAuth();">
         <h4 id="auth-email-mode-title" class="auth-form-title">Sign In with Email</h4>
         
         <div id="auth-name-group" class="form-group" style="display: none; margin-bottom: 0.85rem;">
@@ -598,7 +592,7 @@
         </button>
 
         <div class="auth-toggle-wrapper">
-          <button type="button" id="auth-toggle-mode" class="auth-toggle-btn">
+          <button type="button" id="auth-toggle-mode" class="auth-toggle-btn" onclick="toggleAuthMode()">
             Don't have an account? <span style="color: var(--primary-emerald); text-decoration: underline;">Register</span>
           </button>
         </div>
@@ -621,7 +615,7 @@
 
           <div id="recaptcha-container"></div>
 
-          <button type="button" id="auth-send-otp-btn" class="btn btn-primary" style="width: 100%;">
+          <button type="button" id="auth-send-otp-btn" class="btn btn-primary" style="width: 100%;" onclick="handleSendPhoneOtp()">
             Send Verification Code
           </button>
         </div>
@@ -633,7 +627,7 @@
             <input type="text" id="auth-otp-input" class="form-control otp-control" placeholder="1 2 3 4 5 6" maxlength="6">
           </div>
 
-          <button type="button" id="auth-verify-otp-btn" class="btn btn-primary" style="width: 100%;">
+          <button type="button" id="auth-verify-otp-btn" class="btn btn-primary" style="width: 100%;" onclick="handleVerifyPhoneOtp()">
             Verify Code & Sign In
           </button>
         </div>
@@ -642,51 +636,163 @@
     </div>
   </div>
 
-  <!-- User Dashboard Modal (History for Players & Organizers) -->
-  <div id="user-dashboard-modal" class="modal-overlay">
-    <div class="modal-card user-dashboard-card">
-      <button class="modal-close-btn" onclick="closeModal('user-dashboard-modal')">&times;</button>
+  <!-- SEPARATE DASHBOARD 1: Player & Parent Dashboard Modal -->
+  <div id="player-dashboard-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('player-dashboard-modal')">
+    <div class="modal-card user-dashboard-card" style="max-width: 560px;">
+      <button class="modal-close-btn" onclick="closeModal('player-dashboard-modal')" title="Close">&times;</button>
       
       <div class="dashboard-header">
         <div class="dashboard-user-info">
-          <img id="dash-avatar" src="" alt="User Avatar" class="dashboard-avatar">
+          <img id="player-dash-avatar" src="" alt="Player Avatar" class="dashboard-avatar">
           <div>
-            <h3 id="dash-name" class="dashboard-name">Player Name</h3>
-            <div id="dash-role-badge" class="badge badge-player">Player / Parent</div>
+            <h3 id="player-dash-name" class="dashboard-name">Player Name</h3>
+            <div style="display: flex; gap: 0.4rem; align-items: center; margin-top: 2px;">
+              <span class="badge badge-player">Player / Parent</span>
+              <span id="player-dash-rank-badge" class="badge" style="background: rgba(0, 240, 255, 0.15); color: var(--neon-cyan);">Rank: Unranked</span>
+            </div>
           </div>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="handleSignOut(); closeModal('user-dashboard-modal');">
+        <button class="btn btn-outline btn-sm" onclick="handleSignOut(); closeModal('player-dashboard-modal');">
+          <i data-lucide="log-out" style="width: 14px; height: 14px;"></i> Sign Out
+        </button>
+      </div>
+
+      <!-- Player Dashboard Navigation Tabs -->
+      <div class="dash-tabs-bar">
+        <button id="player-tab-btn-entries" class="dash-tab-btn active" onclick="switchPlayerDashTab('entries')">
+          <i data-lucide="calendar-check" style="width: 16px; height: 16px;"></i> My Registrations
+        </button>
+        <button id="player-tab-btn-profile" class="dash-tab-btn" onclick="switchPlayerDashTab('profile')">
+          <i data-lucide="user-edit" style="width: 16px; height: 16px;"></i> My Player Profile
+        </button>
+      </div>
+
+      <!-- Tab 1: Entered Tournaments -->
+      <div id="player-view-entries" class="dash-tab-view">
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">Tournaments you registered for via WhatsApp or saved:</p>
+        <div id="player-entries-list" class="dash-history-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Tab 2: Player Profile Form -->
+      <div id="player-view-profile" class="dash-tab-view" style="display: none;">
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Complete your athlete profile so organizers can quickly verify your ranking and age category:</p>
+        
+        <form onsubmit="savePlayerProfile(event);">
+          <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group full-width">
+              <label class="form-label">Full Name</label>
+              <input type="text" id="prof-name" class="form-control" required placeholder="Player's full name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Primary Sport</label>
+              <select id="prof-sport" class="form-control">
+                <option value="Tennis">Tennis</option>
+                <option value="Badminton">Badminton</option>
+                <option value="Football">Football</option>
+                <option value="Cricket">Cricket</option>
+                <option value="Table Tennis">Table Tennis</option>
+                <option value="Volleyball">Volleyball</option>
+                <option value="Basketball">Basketball</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Age Category</label>
+              <select id="prof-category" class="form-control">
+                <option value="U-10">Under 10 (U-10)</option>
+                <option value="U-12">Under 12 (U-12)</option>
+                <option value="U-14">Under 14 (U-14)</option>
+                <option value="U-16">Under 16 (U-16)</option>
+                <option value="U-18">Under 18 (U-18)</option>
+                <option value="Open Men's">Open Men's</option>
+                <option value="Open Women's">Open Women's</option>
+                <option value="Veterans 35+">Veterans 35+</option>
+                <option value="Veterans 45+">Veterans 45+</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Official Ranking / Seed</label>
+              <input type="text" id="prof-ranking" class="form-control" placeholder="e.g. State Rank #4 / Unranked">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Federation / AATA / AITA ID</label>
+              <input type="text" id="prof-federation-id" class="form-control" placeholder="Optional ID Number">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Home City / District</label>
+              <input type="text" id="prof-city" class="form-control" placeholder="e.g. Guwahati, Jorhat">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Club / Academy</label>
+              <input type="text" id="prof-academy" class="form-control" placeholder="e.g. Jorhat Tennis Club">
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">Parent / Guardian Contact Phone</label>
+              <input type="tel" id="prof-parent-phone" class="form-control" placeholder="Mobile number for tournament emergency">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            Save Player Profile
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SEPARATE DASHBOARD 2: Tournament Organiser Dashboard Modal -->
+  <div id="organizer-dashboard-modal" class="modal-overlay" onclick="if(event.target === this) closeModal('organizer-dashboard-modal')">
+    <div class="modal-card user-dashboard-card" style="max-width: 560px;">
+      <button class="modal-close-btn" onclick="closeModal('organizer-dashboard-modal')" title="Close">&times;</button>
+      
+      <div class="dashboard-header">
+        <div class="dashboard-user-info">
+          <img id="org-dash-avatar" src="" alt="Organiser Avatar" class="dashboard-avatar" style="border-color: var(--accent-gold);">
+          <div>
+            <h3 id="org-dash-name" class="dashboard-name">Organiser Name</h3>
+            <div class="badge badge-organizer">Verified Tournament Organiser</div>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="handleSignOut(); closeModal('organizer-dashboard-modal');">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i> Sign Out
         </button>
       </div>
 
       <div class="dashboard-body">
-        <!-- Content for Player / Parent -->
-        <div id="dash-player-section">
-          <div class="dashboard-section-title">
-            <i data-lucide="calendar-check" style="width: 18px; height: 18px; color: var(--primary-emerald);"></i>
-            <span>Tournaments Entered & Registered</span>
+        <!-- Quick Organiser Metrics -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+          <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Tournaments Hosted</div>
+            <div id="org-dash-count" style="font-size: 1.4rem; font-weight: 800; color: var(--accent-gold); font-family: var(--font-heading); margin-top: 2px;">0</div>
           </div>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">Tournaments you registered for or contacted organizers via WhatsApp:</p>
-          <div id="dash-player-history-list" class="dash-history-list">
-            <!-- Dynamically populated -->
+          <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Listing Verification</div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary-emerald); margin-top: 6px;">₹499 Verified Partner</div>
           </div>
         </div>
 
-        <!-- Content for Tournament Organiser -->
-        <div id="dash-organizer-section" style="display: none;">
-          <div class="dashboard-section-title">
-            <i data-lucide="award" style="width: 18px; height: 18px; color: var(--accent-gold);"></i>
-            <span>Tournaments Hosted by You</span>
-          </div>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">Official tournaments published under your organizer account:</p>
-          <div id="dash-organizer-history-list" class="dash-history-list">
-            <!-- Dynamically populated -->
-          </div>
-          <button class="btn btn-gold" onclick="closeModal('user-dashboard-modal'); document.getElementById('host-modal').classList.add('active');" style="width: 100%; margin-top: 1rem;">
-            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i> Host Another Tournament
-          </button>
+        <div class="dashboard-section-title">
+          <i data-lucide="award" style="width: 18px; height: 18px; color: var(--accent-gold);"></i>
+          <span>Tournaments Hosted by You</span>
         </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">Official tournaments published under your organizer account:</p>
+        
+        <div id="org-hosted-tournaments-list" class="dash-history-list">
+          <!-- Dynamically populated -->
+        </div>
+
+        <button class="btn btn-gold" onclick="closeModal('organizer-dashboard-modal'); openHostModalDirect();" style="width: 100%; margin-top: 1.25rem;">
+          <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i> Host Another Tournament
+        </button>
       </div>
     </div>
   </div>
